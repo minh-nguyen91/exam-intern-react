@@ -1,3 +1,6 @@
+/* index.css */
+
+/* Root */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -13,6 +16,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Tag elements */
 a {
   font-weight: 500;
   color: #646cff;
@@ -35,24 +39,169 @@ h1 {
   line-height: 1.1;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+
+/* Nav */
+nav {
+  width: 100%;
+  position: sticky;
+  background-color: #242424;
+  top: 0;
+  padding: 1em;
+  text-align: right;
+}
+
+/* Red notification bubble showing basket item count. Positioned near the top-right of the screen. */
+.baskettotal {
+  background-color: red;
+  border-radius: 15px;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  position: absolute;
+  top: 10px;
+  right: 25px;
+}
+
+/* Button for opening the basket ("giỏ hàng") */
+.basketbutton {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  margin: 0 20px 0 0;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  height: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+/* Floating window that shows the list of added basket items. Includes each item's image, name, quantity, and total price. */
+#basketwindow {
+  background-color: #242424;
+  width: 500px;
+  max-height: 500px;
+  border-radius: 8px;
+  box-shadow: 5px 5px 10px -1px rgba(0,0,0,0.4);
+  position: absolute;
+  top: 65px;
+  right: 35px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* The box that shows the item in the basket  */
+.basketbox {
+  display: grid;
+  grid-template-columns: [col1-start] 25%  [col2-start] 75%  ;
+  grid-template-rows: [row1-start] auto [row2-start] ;
+  padding: 10px;
+
+}
+
+/* The image of the item in the basket*/
+.basketimage {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  object-fit: cover;
+  grid-column: col1-start ;
+  grid-row: row1-start / row2-end;
+}
+
+/* The name of the item in the basket*/
+.basketname {
+  margin-top: 8px;
+  margin-bottom: 0px;
+  font-size: 120%;
+  font-weight: bold;
+  text-align: left;
+  grid-column: col2-start;
+  grid-row: row1-start ;
+}
+
+/* The line for the price of the item in the basket*/
+.basketprice {
+  margin-top : 0px;
+  text-align: left;
+  grid-column: col2-start;
+  grid-row: row2-start ;
+}
+
+/* Container */
+
+/* The box that shows the item on the website */
+.itembox {
+  display: grid;
+  width: 300px;
+  grid-template-columns: [col1-start] 80% [col2-start] 20%;
+  grid-template-rows: [row1-start] auto [row2-start] auto [row3-start] auto;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 0.6em;
+  margin: 5px;
+}
+
+.itembox:hover {
+  background-color: #757474;
+}
+
+/* The image of the item in the container */
+.itemimage {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  object-fit: cover;
+  grid-column: col1-start / col2-end;
+  grid-row: row1-start;
+}
+
+/* The name of the item in the container */
+.itemname {
+  margin-top: 8px;
+  margin-bottom: 0px;
+  font-size: 120%;
+  font-weight: bold;
+  text-align: left;
+  grid-column: col1-start ;
+  grid-row: row2-start;
+}
+
+/* The price of the item in the container */
+.itemprice {
+  margin-top : 0px;
+  text-align: left;
+  grid-column: col1-start ;
+  grid-row: row3-start;
+}
+
+/* button that puts the item in the basket */
+.itembuybutton {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  grid-column: col2-start ;
+  grid-row: row2-start / row3-end;
+  height: 50%;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+}
+
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -62,7 +211,18 @@ button:focus-visible {
   a:hover {
     color: #747bff;
   }
+  .itembox:hover {
+    background-color: #f0f0f0;
+  }
   button {
     background-color: #f9f9f9;
+  }
+  #basketwindow {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  nav {
+    color: #213547;
+    background-color: #ffffff;
   }
 }

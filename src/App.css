@@ -1,10 +1,15 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0 2rem 2rem 2rem;
   text-align: center;
 }
 
+/* contains the part where we can see the items that we can buy */
 .container {
   width: 100%;
+	display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
+

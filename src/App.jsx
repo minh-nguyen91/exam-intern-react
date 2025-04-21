@@ -1,4 +1,8 @@
-import './App.css'
+/* App.jsx */
+import './App.css';
+import React, { useState} from 'react';
+import { IoMdCart } from 'react-icons/io';
+import { IoCartOutline } from "react-icons/io5";
 
 const products = [
     { id: 1, name: 'Áo thun trắng', price: 150000, image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab' },
@@ -15,16 +19,80 @@ const products = [
     { id: 12, name: 'Ốp lưng điện thoại', price: 80000, image: 'https://images.unsplash.com/photo-1593055454503-531d165c2ed8' },
 ];
 
+// Displays a small red circle showing how many different items are in the basket.
+// Only rendered if there's at least one item.
+function BasketTotal({ totalBasket }){ 
+  if (totalBasket.length === 0) return null;
+  else return <div className="baskettotal">{totalBasket.length}</div>
+}
+
+// Window that appears to show the basket's content.
+// For each product, displays its image, name, unit price, quantity, and total.
+// Appears when isVisible is true (toggled by clicking the basket icon ("giỏ hàng")).
+function BasketWindow({ isVisible, items }){
+  if (!isVisible) return null; // Prevent rendering if the basket isn't open
+  return (
+  <div id="basketwindow">
+      {items.map((item) => (
+          <div key={item.id} className="basketbox">
+              <img src={item.image} alt={item.name} className="basketimage" title={item.name} width={100} height={100}/>
+              <p className="basketname">{item.name}</p> 
+              <p className="basketprice">Thành tiền: {item.price.toLocaleString('vi-VN', {maximumFractionDigits:0})} x {item.num} = {item.total.toLocaleString('vi-VN', {maximumFractionDigits:0})} VND</p>
+          </div>
+      ))}
+  </div>
+  )
+}
+
 function App() {
+  const [basketProducts, setBasketProducts] = useState([]);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Toggles the visibility of the basket window (open/close).
+  const toggleBasketWindow = () => { 
+    setIsVisible(previousValue => !previousValue);
+  };
+  
+  // Find full product info based on ID.
+  // Used inside the basket window to get name, image, and price for rendering.
+  function getProductsInfo(id) {
+    return products.find(item => item.id === Number(id));
+  }
+  
+  // Handles the "itembuybutton" button click:
+  // If the product is already in the basket, update its quantity and total price.
+  // Otherwise, add the item with its information from products with a quantity of 1 (num = 1) and a total equal to the price multiplied by its quantity.
+  function buyButtonClick(event) {
+    const elementId = Number(event.currentTarget.id);
+    var product = basketProducts.find(item => item.id === elementId);
+
+    if (product) {
+      setBasketProducts(prev =>
+        prev.map(item =>
+          item.id === elementId ? { ...item, num: item.num + 1, total: item.total + item.price } : item
+        )
+      );
+    } else {
+      product = getProductsInfo(elementId);
+      setBasketProducts(prev => [...prev, { id: elementId, name: product.name, price: product.price, image: product.image, num: 1, total: product.price}]);
+    }
+  };
 
   return (
     <main>
+      <nav>
+        <button className="basketbutton" onClick={toggleBasketWindow}>Giỏ hàng <IoCartOutline style={{width: '20px', height: '20px'}}/></button>
+        <BasketTotal totalBasket={basketProducts}/> {/* Renders the red badge showing how many different items are in the basket */}
+        <BasketWindow isVisible={isVisible} items={basketProducts}/> {/* Renders the window showing the basket contents, if the window is toggled open */}
+      </nav>
       <div className="container">
           {products.map((item) => (
-              <div key={item.id}>
-                  <img src={item.image} alt={item.name} title={item.name} width={300}/>
-                  <p>{item.name}</p>
-                  <p>{item.price}</p>
+              <div key={item.id} className="itembox">
+                  <img src={item.image} alt={item.name} className="itemimage" title={item.name} width={300} height={300}/>
+                  <p className="itemname">{item.name}</p>
+                  <p className="itemprice">{item.price.toLocaleString('vi-VN', {maximumFractionDigits:0})} VND</p>
+                  {/* "Add to basket" button with shopping cart icon */}
+                  <button onClick={buyButtonClick} className="itembuybutton" id={item.id}><IoMdCart style={{width: '70%', height: '70%'}} /></button>
               </div>
           ))}
       </div>
